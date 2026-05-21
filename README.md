@@ -116,6 +116,9 @@ pnpm build:server
 ```bash
 pnpm preview:weapp
 ```
+![演示图](docs/screenshots/loginpage.png "Login")
+
+![演示图](docs/screenshots/adminpage.png "adminpage")
 
 ## 本地开发建议
 
@@ -141,14 +144,6 @@ pnpm preview:weapp
 - `Network.uploadFile()`
 - `Network.downloadFile()`
 
-它会自动添加项目域名前缀，适配不同环境。
-
-## GitHub 展示建议
-
-- 上传此仓库到 GitHub
-- 在仓库首页展示本 `README.md` 和项目截图
-- 若需要展示 H5 入口，可补充 `Demo` 说明：`pnpm dev:web`
-- 若需要展示小程序体验，可补充 `Preview` 说明：`pnpm preview:weapp`
 
 ## 额外说明
 
