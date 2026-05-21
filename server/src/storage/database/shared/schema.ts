@@ -15,7 +15,7 @@ export const users = pgTable(
 		id: serial().primaryKey(),
 		name: varchar("name", { length: 100 }).notNull(),
 		employee_id: varchar("employee_id", { length: 50 }).notNull().unique(), // 工号
-		role: varchar("role", { length: 20 }).notNull().default("employee"), // employee 或 leader
+		role: varchar("role", { length: 20 }).notNull().default("employee"), // employee（员工）、leader（领导）、admin（管理员）
 		created_at: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 		updated_at: timestamp("updated_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	},

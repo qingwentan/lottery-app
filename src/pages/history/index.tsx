@@ -9,7 +9,7 @@ interface UserInfo {
   id: number;
   name: string;
   employee_id: string;
-  role: 'leader' | 'employee';
+  role: 'admin' | 'leader' | 'employee';
 }
 
 interface WinnerRecord {

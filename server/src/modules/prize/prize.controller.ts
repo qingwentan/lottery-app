@@ -23,7 +23,7 @@ export class PrizeController {
   }
 
   /**
-   * 创建奖项（仅领导）
+   * 创建奖项（仅管理员）
    * POST /api/prizes
    */
   @Post()
@@ -36,9 +36,19 @@ export class PrizeController {
       level: number;
       quantity: number;
       description?: string;
+      user_role?: string;
     },
   ) {
     console.log('[PrizeController] 创建奖项:', body);
+    
+    // 权限检查：只有管理员可以创建奖项
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理奖项',
+        data: null,
+      };
+    }
     
     const prize = await this.prizeService.createPrize(
       body.event_id,
@@ -56,7 +66,7 @@ export class PrizeController {
   }
 
   /**
-   * 更新奖项（仅领导）
+   * 更新奖项（仅管理员）
    * PUT /api/prizes/:id
    */
   @Put(':id')
@@ -69,11 +79,22 @@ export class PrizeController {
       level?: number;
       quantity?: number;
       description?: string;
+      user_role?: string;
     },
   ) {
     console.log('[PrizeController] 更新奖项:', { id, updates: body });
     
-    const prize = await this.prizeService.updatePrize(Number(id), body);
+    // 权限检查：只有管理员可以更新奖项
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理奖项',
+        data: null,
+      };
+    }
+    
+    const { user_role, ...updates } = body;
+    const prize = await this.prizeService.updatePrize(Number(id), updates);
     
     return {
       code: 200,
@@ -83,13 +104,25 @@ export class PrizeController {
   }
 
   /**
-   * 删除奖项（仅领导）
+   * 删除奖项（仅管理员）
    * DELETE /api/prizes/:id
    */
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async deletePrize(@Param('id') id: string) {
+  async deletePrize(
+    @Param('id') id: string,
+    @Body() body: { user_role?: string },
+  ) {
     console.log('[PrizeController] 删除奖项:', { id });
+    
+    // 权限检查：只有管理员可以删除奖项
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理奖项',
+        data: null,
+      };
+    }
     
     await this.prizeService.deletePrize(Number(id));
     

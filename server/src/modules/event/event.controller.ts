@@ -59,15 +59,24 @@ export class EventController {
   }
 
   /**
-   * 创建活动（仅领导）
+   * 创建活动（仅管理员）
    * POST /api/events
    */
   @Post()
   @HttpCode(HttpStatus.OK)
   async createEvent(
-    @Body() body: { title: string; description?: string },
+    @Body() body: { title: string; description?: string; user_role?: string },
   ) {
     console.log('[EventController] 创建活动:', body);
+    
+    // 权限检查：只有管理员可以创建活动
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理活动',
+        data: null,
+      };
+    }
     
     const event = await this.eventService.createEvent(body.title, body.description);
     
@@ -79,7 +88,7 @@ export class EventController {
   }
 
   /**
-   * 更新活动（仅领导）
+   * 更新活动（仅管理员）
    * PUT /api/events/:id
    */
   @Put(':id')
@@ -91,11 +100,22 @@ export class EventController {
       title?: string;
       description?: string;
       is_active?: boolean;
+      user_role?: string;
     },
   ) {
     console.log('[EventController] 更新活动:', { id, updates: body });
     
-    const event = await this.eventService.updateEvent(Number(id), body);
+    // 权限检查：只有管理员可以更新活动
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理活动',
+        data: null,
+      };
+    }
+    
+    const { user_role, ...updates } = body;
+    const event = await this.eventService.updateEvent(Number(id), updates);
     
     return {
       code: 200,
@@ -105,13 +125,25 @@ export class EventController {
   }
 
   /**
-   * 删除活动（仅领导）
+   * 删除活动（仅管理员）
    * DELETE /api/events/:id
    */
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async deleteEvent(@Param('id') id: string) {
+  async deleteEvent(
+    @Param('id') id: string,
+    @Body() body: { user_role?: string },
+  ) {
     console.log('[EventController] 删除活动:', { id });
+    
+    // 权限检查：只有管理员可以删除活动
+    if (body.user_role !== 'admin') {
+      return {
+        code: 403,
+        msg: '权限不足，仅管理员可以管理活动',
+        data: null,
+      };
+    }
     
     await this.eventService.deleteEvent(Number(id));
     

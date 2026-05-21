@@ -11,7 +11,7 @@ interface UserInfo {
   id: number;
   name: string;
   employee_id: string;
-  role: 'leader' | 'employee';
+  role: 'admin' | 'leader' | 'employee';
 }
 
 interface Prize {
@@ -50,8 +50,8 @@ const AdminPage = () => {
       Taro.redirectTo({ url: '/pages/index/index' });
       return;
     }
-    if (user.role !== 'leader') {
-      Taro.showToast({ title: '无权访问此页面', icon: 'none' });
+    if (user.role !== 'admin') {
+      Taro.showToast({ title: '无权访问此页面，仅管理员可访问', icon: 'none' });
       setTimeout(() => {
         Taro.navigateBack();
       }, 1500);
@@ -95,7 +95,7 @@ const AdminPage = () => {
   };
 
   const handleAddPrize = async () => {
-    if (!event) return;
+    if (!event || !userInfo) return;
 
     if (!newPrize.name.trim()) {
       Taro.showToast({ title: '请输入奖项名称', icon: 'none' });
@@ -118,6 +118,7 @@ const AdminPage = () => {
           level: newPrize.level,
           quantity: newPrize.quantity,
           description: newPrize.description,
+          user_role: userInfo.role,
         },
       });
 
@@ -138,6 +139,8 @@ const AdminPage = () => {
   };
 
   const handleDeletePrize = async (prizeId: number) => {
+    if (!userInfo) return;
+    
     Taro.showModal({
       title: '确认删除',
       content: '确定要删除这个奖项吗？',
@@ -147,6 +150,7 @@ const AdminPage = () => {
             const delRes = await Network.request({
               url: `/api/prizes/${prizeId}`,
               method: 'DELETE',
+              data: { user_role: userInfo.role },
             });
 
             if (delRes.data?.code === 200) {
@@ -180,7 +184,7 @@ const AdminPage = () => {
           奖项管理
         </Text>
         <Text className="block text-sm text-[#8c8c8c] mt-1">
-          仅领导可访问
+          仅管理员可访问
         </Text>
       </View>
 

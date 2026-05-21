@@ -39,8 +39,14 @@ export class AuthService {
     }
 
     // 用户不存在，自动创建
-    // 根据工号前缀判断角色（L开头为领导）
-    const role = employeeId.toUpperCase().startsWith('L') ? 'leader' : 'employee';
+    // 根据工号前缀判断角色（A开头为管理员，L开头为领导，其他为员工）
+    let role = 'employee';
+    const upperEmployeeId = employeeId.toUpperCase();
+    if (upperEmployeeId.startsWith('A')) {
+      role = 'admin';
+    } else if (upperEmployeeId.startsWith('L')) {
+      role = 'leader';
+    }
     
     const { data: newUser, error: createError } = await client
       .from('users')

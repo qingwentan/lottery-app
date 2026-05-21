@@ -10,7 +10,7 @@ interface UserInfo {
   id: number;
   name: string;
   employee_id: string;
-  role: 'leader' | 'employee';
+  role: 'admin' | 'leader' | 'employee';
 }
 
 interface Prize {
@@ -188,7 +188,7 @@ const LotteryPage = () => {
               {userInfo.name}
             </Text>
             <Text className="block text-sm text-[#8c8c8c]">
-              {userInfo.employee_id} · {userInfo.role === 'leader' ? '领导' : '员工'}
+              {userInfo.employee_id} · {userInfo.role === 'admin' ? '管理员' : userInfo.role === 'leader' ? '领导' : '员工'}
             </Text>
           </View>
           <Button
@@ -316,7 +316,7 @@ const LotteryPage = () => {
         >
           <Text>中奖记录</Text>
         </Button>
-        {userInfo.role === 'leader' && (
+        {userInfo.role === 'admin' && (
           <Button
             variant="default"
             className="flex-1 bg-[#1890ff]"

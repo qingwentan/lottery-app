@@ -10,7 +10,7 @@ interface LoginResponse {
   id: number;
   name: string;
   employee_id: string;
-  role: 'leader' | 'employee';
+  role: 'admin' | 'leader' | 'employee';
   created_at: string;
   updated_at: string;
 }
@@ -49,7 +49,7 @@ const LoginPage = () => {
         Taro.setStorageSync('userInfo', user);
         
         Taro.showToast({
-          title: `登录成功！${user.role === 'leader' ? '领导' : '员工'}身份`,
+          title: `登录成功！${user.role === 'admin' ? '管理员' : user.role === 'leader' ? '领导' : '员工'}身份`,
           icon: 'success',
         });
 
@@ -105,13 +105,13 @@ const LoginPage = () => {
             <View className="bg-gray-50 rounded-xl px-4 py-3">
               <Input
                 className="w-full bg-transparent"
-                placeholder="领导工号以 L 开头"
+                placeholder="请输入工号"
                 value={employeeId}
                 onInput={(e) => setEmployeeId(e.detail.value)}
               />
             </View>
             <Text className="block text-xs text-[#8c8c8c] mt-1">
-              提示：领导工号以 L 开头（如 L001），员工工号以 E 开头（如 E001）
+              提示：管理员工号以 A 开头（如 A001），领导工号以 L 开头（如 L001），员工工号以 E 开头（如 E001）
             </Text>
           </View>
 
