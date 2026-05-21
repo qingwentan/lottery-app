@@ -66,28 +66,6 @@
 - `src/pages/admin/index.tsx`：管理员奖项管理
 - `src/pages/history/index.tsx`：抽奖历史记录
 
-## 项目截图
-
-> 以下是建议使用的截图布局。请将实际截图文件放入 `docs/screenshots/`，并替换下面的示例路径。
-
-### 登录页
-
-![登录页](docs/screenshots/login.png)
-
-### 抽奖页
-
-![抽奖页](docs/screenshots/lottery.png)
-
-### 管理页
-
-![管理页](docs/screenshots/admin.png)
-
-### 历史页
-
-![历史页](docs/screenshots/history.png)
-
-如果你已经有截图文件，可以直接把它们放入 `docs/screenshots/`，并将路径替换成本地图片文件名。
-
 ## 主要后端模块
 
 - `server/src/modules/auth`：登录与用户查询
@@ -177,12 +155,3 @@ pnpm preview:weapp
 - 后端入口文件：`server/src/main.ts`
 - NestJS 已通过全局前缀 `/api` 暴露接口
 - `key/` 目录保存小程序密钥，仅用于 CI 上传，不要提交真实机密
-
-## 可扩展方向
-
-如果你希望继续构建，这个项目可以进一步扩展为：
-
-1. 活动管理控制台（创建、启用、关闭活动）
-2. 角色权限体系（管理员 / 领导 / 员工）
-3. 抽奖概率配置与奖品库存管理
-4. 报表展示与抽奖记录导出
